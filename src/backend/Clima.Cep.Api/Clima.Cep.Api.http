@@ -1,0 +1,6 @@
+@Clima.Cep.Api_HostAddress = http://localhost:5090
+
+GET {{Clima.Cep.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

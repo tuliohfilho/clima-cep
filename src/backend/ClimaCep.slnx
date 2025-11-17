@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="Clima.Cep.Application/Clima.Cep.Application.csproj" Id="77f12a01-80ba-4dc3-a6fb-ab5988aab134" />
+    <Project Path="Clima.Cep.Domain/Clima.Cep.Domain.csproj" Id="48d92273-98b3-4d94-b186-16143dea5daf" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Clima.Cep.Infrastructure/Clima.Cep.Infrastructure.csproj" Id="67153114-d378-409c-b978-c8cc1ae518f1" />
+  </Folder>
+  <Folder Name="/Presentations/">
+    <Project Path="Clima.Cep.Api/Clima.Cep.Api.csproj" Id="5406ff29-edd6-4170-b474-26d997c85414" />
+  </Folder>
+  <Folder Name="/ServiceIntegration/">
+    <Project Path="ServiceIntegration. BrasilAPICEP/ServiceIntegration.BrasilAPICEP.csproj" Id="71d83444-de47-4895-a43b-49e3870b362b" />
+    <Project Path="ServiceIntegration.OpenMeteoForecast/ServiceIntegration.OpenMeteoForecast.csproj" Id="8fd7b38b-b6a4-4bbd-aa3b-e0ca0c6804a0" />
+    <Project Path="ServiceIntegration.OpenMeteoGeocoding/ServiceIntegration.OpenMeteoGeocoding.csproj" Id="6639f559-5c9f-4016-a19b-d43aa72740fe" />
+    <Project Path="ServiceIntegration.ViaCEP/ServiceIntegration.ViaCEP.csproj" Id="5413f4c9-0394-431e-bdeb-9ccc0901123f" />
+  </Folder>
+</Solution>
