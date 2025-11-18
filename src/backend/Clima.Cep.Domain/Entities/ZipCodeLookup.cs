@@ -44,8 +44,8 @@ public class ZipCodeLookup : Entity
         string city,
         string state,
         string ibge,
-        double? lat,
-        double? lon,
+        decimal? lat,
+        decimal? lon,
         string provider) {
         var location = (lat.HasValue && lon.HasValue) ? new Location(lat.Value, lon.Value) : null;
 

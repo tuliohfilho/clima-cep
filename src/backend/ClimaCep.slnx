@@ -10,7 +10,7 @@
     <Project Path="Clima.Cep.Api/Clima.Cep.Api.csproj" Id="5406ff29-edd6-4170-b474-26d997c85414" />
   </Folder>
   <Folder Name="/ServiceIntegration/">
-    <Project Path="ServiceIntegration. BrasilAPICEP/ServiceIntegration.BrasilAPICEP.csproj" Id="71d83444-de47-4895-a43b-49e3870b362b" />
+    <Project Path="ServiceIntegration.BrasilAPICEP/ServiceIntegration.BrasilAPICEP.csproj" />
     <Project Path="ServiceIntegration.OpenMeteoForecast/ServiceIntegration.OpenMeteoForecast.csproj" Id="8fd7b38b-b6a4-4bbd-aa3b-e0ca0c6804a0" />
     <Project Path="ServiceIntegration.OpenMeteoGeocoding/ServiceIntegration.OpenMeteoGeocoding.csproj" Id="6639f559-5c9f-4016-a19b-d43aa72740fe" />
     <Project Path="ServiceIntegration.ViaCEP/ServiceIntegration.ViaCEP.csproj" Id="5413f4c9-0394-431e-bdeb-9ccc0901123f" />

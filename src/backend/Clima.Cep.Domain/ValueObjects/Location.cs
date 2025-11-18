@@ -4,12 +4,12 @@ namespace Clima.Cep.Domain.ValueObjects;
 
 public class Location : ValueObject
 {
-    public double Latitude { get; private set; }
-    public double Longitude { get; private set; }
+    public decimal Latitude { get; private set; }
+    public decimal Longitude { get; private set; }
 
     private Location() { }
 
-    public Location(double latitude, double longitude) {
+    public Location(decimal latitude, decimal longitude) {
         Latitude = latitude;
         Longitude = longitude;
     }

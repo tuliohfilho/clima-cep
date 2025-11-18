@@ -24,4 +24,9 @@ public interface IZipCodeLookupRepository
     /// Retorna um registro de CEP pelo seu ID.
     /// </summary>
     Task<ZipCodeLookup> GetByIdAsync(Guid id);
+
+    /// <summary>
+    ///  Retorna um registro de CEP pelo seu zipCode
+    /// </summary>
+    Task<ZipCodeLookup> GetByZipCodeAsync(ZipCode zipCode);
 }

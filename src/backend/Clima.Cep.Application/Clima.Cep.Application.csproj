@@ -5,4 +5,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Clima.Cep.Domain\Clima.Cep.Domain.csproj" />
+    <ProjectReference Include="..\ServiceIntegration.BrasilAPICEP\ServiceIntegration.BrasilAPICEP.csproj" />
+    <ProjectReference Include="..\ServiceIntegration.OpenMeteoForecast\ServiceIntegration.OpenMeteoForecast.csproj" />
+    <ProjectReference Include="..\ServiceIntegration.OpenMeteoGeocoding\ServiceIntegration.OpenMeteoGeocoding.csproj" />
+    <ProjectReference Include="..\ServiceIntegration.ViaCEP\ServiceIntegration.ViaCEP.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="13.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
 </Project>

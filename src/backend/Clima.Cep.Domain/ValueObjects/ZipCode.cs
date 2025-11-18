@@ -32,7 +32,7 @@ public class ZipCode : ValueObject
     }
 
     public static implicit operator string(ZipCode zipCode) => zipCode.Value;
-    public static explicit operator ZipCode(string value) => new ZipCode(value);
+    public static explicit operator ZipCode(string value) => new(value);
 
     protected override IEnumerable<object> GetEqualityComponents() {
         yield return NormalizedValue;

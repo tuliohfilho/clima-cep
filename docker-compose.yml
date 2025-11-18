@@ -1,27 +1,15 @@
 version: '3.8'
 
 services:
-  cdbcalculator-api:
+  clima-cep-api:
     build:
       context: .
-      dockerfile: src/backend/Cdb.Calculator.Api/Dockerfile
-    container_name: cdbcalculator-api
+      dockerfile: src/backend/Clima.Cep.Api/Dockerfile
+    container_name: clima-cep-api
     ports:
       - "5137:80"
     environment:
       - ASPNETCORE_URLS=http://+:80
-    networks:
-      - cdbnetwork
-
-  cdbcalculator-web:
-    build:
-      context: .
-      dockerfile: src/frontend/Cdb.Calculator.App/Dockerfile
-    container_name: cdbcalculator-web
-    ports:
-      - "4200:80"
-    depends_on:
-      - cdbcalculator-api
     networks:
       - cdbnetwork
 
