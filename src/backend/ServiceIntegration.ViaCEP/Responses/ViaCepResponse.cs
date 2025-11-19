@@ -1,4 +1,6 @@
-﻿namespace ServiceIntegration.ViaCEP.Responses;
+﻿using System.Reflection.PortableExecutable;
+
+namespace ServiceIntegration.ViaCEP.Responses;
 
 /// <summary>
 /// Modelo de resposta da API ViaCEP.
@@ -18,5 +20,16 @@ public class ViaCepResponse
     public string Gia { get; set; }
     public string Ddd { get; set; }
     public string Siafi { get; set; }
-    public bool Erro { get; set; }
+    public string Erro { get; set; }
+
+    public bool HasErro() {
+        if (!string.IsNullOrWhiteSpace(Erro)) {
+            var str = Erro.ToLower();
+
+            if (str == "true" || str == "1") return true;
+            if (str == "false" || str == "0") return false;
+        }
+
+        return false;
+    }
 }

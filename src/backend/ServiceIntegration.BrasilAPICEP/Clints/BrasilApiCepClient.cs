@@ -1,13 +1,16 @@
-﻿using ServiceIntegration.BrasilAPICEP.Interfaces;
+﻿using Microsoft.Extensions.Logging;
+using ServiceIntegration.BrasilAPICEP.Exceptions;
+using ServiceIntegration.BrasilAPICEP.Interfaces;
 using ServiceIntegration.BrasilAPICEP.Responses;
 using System.Net;
 using System.Net.Http.Json;
 
 namespace ServiceIntegration.BrasilAPICEP.Clints;
 
-public sealed class BrasilApiCepClient(HttpClient httpClient) : IBrasilApiCepClient
+public sealed class BrasilApiCepClient(HttpClient httpClient, ILogger<BrasilApiCepClient> logger) : IBrasilApiCepClient
 {
-    private readonly HttpClient _httpClient = httpClient;
+    private readonly HttpClient _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+    private readonly ILogger<BrasilApiCepClient> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     public async Task<BrasilApiCepResponse> GetAddressByZipCodeAsync(string cep, CancellationToken cancellationToken = default) {
         cep = NormalizeCep(cep);
@@ -16,8 +19,8 @@ public sealed class BrasilApiCepClient(HttpClient httpClient) : IBrasilApiCepCli
 
         var response = await _httpClient.GetAsync(url, cancellationToken);
 
-        if (response.StatusCode == HttpStatusCode.NotFound)
-            return null;
+        if (response.StatusCode == HttpStatusCode.BadRequest)
+            throw new BrasilApiCepBadRequestException(cep);
 
         response.EnsureSuccessStatusCode();
 

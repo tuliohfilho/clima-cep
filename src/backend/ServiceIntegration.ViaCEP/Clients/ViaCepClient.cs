@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using ServiceIntegration.ViaCEP.Exceptions;
 using ServiceIntegration.ViaCEP.Interfaces;
 using ServiceIntegration.ViaCEP.Responses;
 using System.Net;
@@ -22,13 +23,16 @@ public class ViaCepClient(HttpClient httpClient, ILogger<ViaCepClient> logger) :
 
         var response = await _httpClient.GetAsync(url, cancellationToken);
 
-        if (response.StatusCode == HttpStatusCode.NotFound)
-            return null;
+        if (response.StatusCode == HttpStatusCode.BadRequest)
+            throw new CepBadRequestException(cep);
 
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content
             .ReadFromJsonAsync<ViaCepResponse>(cancellationToken: cancellationToken);
+
+        if (result.HasErro())
+            throw new CepNotFoundException(cep);
 
         return result;
     }

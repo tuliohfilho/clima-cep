@@ -1,13 +1,8 @@
 using Microsoft.Extensions.Logging;
 using ServiceIntegration.OpenMeteoForecast.Interfaces;
 using ServiceIntegration.OpenMeteoForecast.Responses;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace ServiceIntegration.OpenMeteoForecast.Clients;
 
@@ -39,7 +34,6 @@ public class OpenMeteoWeatherClient(HttpClient httpClient, ILogger<OpenMeteoWeat
                 $"daily=temperature_2m_max,temperature_2m_min&" +
                 $"timeformat=iso8601&" +
                 $"timezone=UTC";
-
 
             var response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();

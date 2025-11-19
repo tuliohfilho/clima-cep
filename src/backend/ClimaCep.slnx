@@ -1,18 +1,25 @@
 <Solution>
   <Folder Name="/Core/">
+    <Project Path="Clima.Cep.Application.Testes/Clima.Cep.Application.Testes.csproj" Id="f738426f-5e0b-44e8-898e-b04bccd3364a" />
     <Project Path="Clima.Cep.Application/Clima.Cep.Application.csproj" Id="77f12a01-80ba-4dc3-a6fb-ab5988aab134" />
     <Project Path="Clima.Cep.Domain/Clima.Cep.Domain.csproj" Id="48d92273-98b3-4d94-b186-16143dea5daf" />
   </Folder>
   <Folder Name="/Infrastructure/">
+    <Project Path="Clima.Cep.Infrastructure.Tests/Clima.Cep.Infrastructure.Tests.csproj" Id="f1bfc2d0-79c1-40f9-a503-5287bc63c3f2" />
     <Project Path="Clima.Cep.Infrastructure/Clima.Cep.Infrastructure.csproj" Id="67153114-d378-409c-b978-c8cc1ae518f1" />
   </Folder>
   <Folder Name="/Presentations/">
+    <Project Path="Clima.Cep.Api.Tests/Clima.Cep.Api.Tests.csproj" Id="a078d83d-2063-4e23-9fb3-290a779b9ae8" />
     <Project Path="Clima.Cep.Api/Clima.Cep.Api.csproj" Id="5406ff29-edd6-4170-b474-26d997c85414" />
   </Folder>
   <Folder Name="/ServiceIntegration/">
+    <Project Path="ServiceIntegration.BrasilAPICEP.Tests/ServiceIntegration.BrasilAPICEP.Tests.csproj" Id="6ee57234-9914-4d4b-81db-d155bfde97bd" />
     <Project Path="ServiceIntegration.BrasilAPICEP/ServiceIntegration.BrasilAPICEP.csproj" />
+    <Project Path="ServiceIntegration.OpenMeteoForecast.Tests/ServiceIntegration.OpenMeteoForecast.Tests.csproj" Id="1d3c37f1-98fb-40f8-9a31-9999ec367d6c" />
     <Project Path="ServiceIntegration.OpenMeteoForecast/ServiceIntegration.OpenMeteoForecast.csproj" Id="8fd7b38b-b6a4-4bbd-aa3b-e0ca0c6804a0" />
+    <Project Path="ServiceIntegration.OpenMeteoGeocoding.Tests/ServiceIntegration.OpenMeteoGeocoding.Tests.csproj" Id="75ece57f-0df1-4da1-b99a-9f04e895ec72" />
     <Project Path="ServiceIntegration.OpenMeteoGeocoding/ServiceIntegration.OpenMeteoGeocoding.csproj" Id="6639f559-5c9f-4016-a19b-d43aa72740fe" />
+    <Project Path="ServiceIntegration.ViaCEP.Tests/ServiceIntegration.ViaCEP.Tests.csproj" Id="79e7066e-3689-4f4a-8d3f-c850fe5bffc7" />
     <Project Path="ServiceIntegration.ViaCEP/ServiceIntegration.ViaCEP.csproj" Id="5413f4c9-0394-431e-bdeb-9ccc0901123f" />
   </Folder>
 </Solution>
