@@ -1,44 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './CepSearchForm.css';
 
-/**
- * Componente de formulário para busca de CEP
- */
-const CepSearchForm = ({ onSearch, loading }) => {
-  const [cepInput, setCepInput] = React.useState('');
+const CepSearchForm = ({ onSearch, loading, shouldClear }) => {
+  const [cepInput, setCepInput] = useState('');
+
+  useEffect(() => {
+    if (shouldClear) {
+      setCepInput('');
+    }
+  }, [shouldClear]);
+
+  const handleInputChange = (e) => {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length <= 8) {
+      if (value.length <= 5) {
+        setCepInput(value);
+      } else {
+        setCepInput(`${value.slice(0, 5)}-${value.slice(5)}`);
+      }
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(cepInput);
-  };
-
-  const handleChange = (e) => {
-    let value = e.target.value.replace(/\D/g, '');
-    // Formatar CEP: XXXXX-XXX
-    if (value.length <= 5) {
-      setCepInput(value);
-    } else {
-      setCepInput(value.substring(0, 5) + '-' + value.substring(5, 8));
+    if (cepInput) {
+      onSearch(cepInput);
     }
   };
 
   return (
-    <form className="cep-search-form" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="cep-search-form">
       <div className="form-group">
-        <label htmlFor="cep-input">CEP:</label>
+        <label htmlFor="cepInput">Buscar por CEP</label>
         <input
-          id="cep-input"
+          id="cepInput"
           type="text"
-          placeholder="Digite um CEP (ex: 01310-100)"
+          placeholder="Digite o CEP (ex: 61765-350)"
           value={cepInput}
-          onChange={handleChange}
-          maxLength="9"
+          onChange={handleInputChange}
           disabled={loading}
+          maxLength="9"
           className="cep-input"
-          required
         />
       </div>
-      <button type="submit" disabled={loading} className="btn btn-primary">
+      <button type="submit" disabled={loading || !cepInput} className="search-btn">
         {loading ? 'Buscando...' : 'Buscar'}
       </button>
     </form>

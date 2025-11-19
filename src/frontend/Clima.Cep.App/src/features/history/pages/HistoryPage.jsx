@@ -11,7 +11,6 @@ const HistoryPage = () => {
   const {
     historyData,
     loading,
-    error,
     selectedItem,
     setSelectedItem,
     removeItem,
@@ -19,8 +18,8 @@ const HistoryPage = () => {
     getDetail
   } = useHistory();
 
-  const handleSelectItem = (id) => {
-    getDetail(id);
+  const handleSelectItem = (item) => {
+    setSelectedItem(item);
   };
 
   const handleRemoveItem = (id) => {
@@ -39,43 +38,40 @@ const HistoryPage = () => {
     <div className="history-page">
       <div className="page-header">
         <h1>Histórico de Buscas</h1>
-        <p>Veja todas as suas buscas anteriores de CEP e clima</p>
+        <p>Veja todas as suas buscas anteriores de CEP</p>
       </div>
-
-      {error && (
-        <div className="error-message">
-          <strong>Erro:</strong> {error}
-        </div>
-      )}
-
-      {loading && (
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Carregando histórico...</p>
-        </div>
-      )}
 
       {!loading && (
         <div className="history-container">
           <div className="history-list-section">
-            {historyData.length > 0 && (
-              <button className="btn btn-danger" onClick={handleClearAll}>
-                Limpar Todo Histórico
-              </button>
+            {historyData.length === 0 ? (
+              <div className="empty-state">
+                <p>Nenhuma busca realizada ainda</p>
+              </div>
+            ) : (
+              <>
+                {historyData.length > 0 && (
+                  <button className="btn btn-danger" onClick={handleClearAll}>
+                    Limpar Todo Histórico
+                  </button>
+                )}
+                <HistoryList
+                  items={historyData}
+                  onSelectItem={handleSelectItem}
+                  onRemoveItem={handleRemoveItem}
+                  selectedId={selectedItem?.id}
+                />
+              </>
             )}
-            <HistoryList
-              items={historyData}
-              onSelectItem={handleSelectItem}
-              onRemoveItem={handleRemoveItem}
-              selectedId={selectedItem?.id}
-            />
           </div>
 
           <div className="history-detail-section">
-            <HistoryDetail
-              data={selectedItem}
-              onClose={() => setSelectedItem(null)}
-            />
+            {selectedItem && (
+              <HistoryDetail
+                data={selectedItem}
+                onClose={() => setSelectedItem(null)}
+              />
+            )}
           </div>
         </div>
       )}

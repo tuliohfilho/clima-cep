@@ -3,19 +3,23 @@ import cepService from '../services/cepService';
 
 /**
  * Hook para gerenciar a lógica de busca de CEP
- * Gerencia estado, loading, erros e histórico
+ * Gerencia estado, loading, erros e histórico local
  */
 const useCep = () => {
   const [cepData, setCepData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchHistory, setSearchHistory] = useState(() => {
-    const saved = localStorage.getItem('cepSearchHistory');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('cepSearchHistory');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
   });
 
   /**
-   * Busca CEP com clima e atualiza histórico
+   * Busca CEP e atualiza histórico
    */
   const searchCep = useCallback(async (cep) => {
     if (!cep || cep.trim() === '') {
@@ -32,14 +36,24 @@ const useCep = () => {
         throw new Error('CEP deve conter 8 dígitos');
       }
 
-      const data = await cepService.searchCepWithWeather(cleanCep);
+      const data = await cepService.searchCep(cleanCep);
       setCepData(data);
 
-      // Adicionar ao histórico
+      // Adicionar ao histórico local
+      const newHistoryEntry = {
+        id: new Date().getTime().toString(),
+        zipCode: cleanCep,
+        street: data.street,
+        district: data.district,
+        city: data.city,
+        state: data.state,
+        timestamp: new Date().toISOString()
+      };
+
       const newHistory = [
-        { cep: cleanCep, timestamp: new Date().toISOString() },
-        ...searchHistory.filter(item => item.cep !== cleanCep)
-      ].slice(0, 20); // Manter apenas os últimos 20
+        newHistoryEntry,
+        ...searchHistory.filter(item => item.zipCode !== cleanCep)
+      ].slice(0, 20);
 
       setSearchHistory(newHistory);
       localStorage.setItem('cepSearchHistory', JSON.stringify(newHistory));
@@ -66,8 +80,8 @@ const useCep = () => {
   /**
    * Remove um item do histórico
    */
-  const removeFromHistory = useCallback((cep) => {
-    const newHistory = searchHistory.filter(item => item.cep !== cep);
+  const removeFromHistory = useCallback((id) => {
+    const newHistory = searchHistory.filter(item => item.id !== id);
     setSearchHistory(newHistory);
     localStorage.setItem('cepSearchHistory', JSON.stringify(newHistory));
   }, [searchHistory]);

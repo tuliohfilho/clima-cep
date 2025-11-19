@@ -2,6 +2,31 @@ import React from 'react';
 import './HistoryDetail.css';
 
 /**
+ * Formata CEP para XXXXX-XXX
+ */
+const formatCep = (cep) => {
+  if (!cep) return '';
+  const clean = cep.toString().replace(/\D/g, '');
+  return `${clean.slice(0, 5)}-${clean.slice(5)}`;
+};
+
+/**
+ * Formata data para formato relativo
+ */
+const getRelativeTime = (timestamp) => {
+  const now = new Date();
+  const date = new Date(timestamp);
+  const seconds = Math.floor((now - date) / 1000);
+  
+  if (seconds < 60) return 'agora';
+  if (seconds < 3600) return `há ${Math.floor(seconds / 60)} minuto(s)`;
+  if (seconds < 86400) return `há ${Math.floor(seconds / 3600)} hora(s)`;
+  if (seconds < 604800) return `há ${Math.floor(seconds / 86400)} dia(s)`;
+  
+  return date.toLocaleDateString('pt-BR');
+};
+
+/**
  * Componente para exibir detalhes de um item do histórico
  */
 const HistoryDetail = ({ data, onClose }) => {
@@ -13,7 +38,11 @@ const HistoryDetail = ({ data, onClose }) => {
     );
   }
 
-  const { location, weather, timestamp } = data;
+  const formatCepNumber = (cep) => {
+    if (!cep) return '';
+    const clean = cep.toString().replace(/\D/g, '');
+    return `${clean.slice(0, 5)}-${clean.slice(5)}`;
+  };
 
   return (
     <div className="history-detail">
@@ -23,83 +52,40 @@ const HistoryDetail = ({ data, onClose }) => {
       </div>
 
       <div className="detail-timestamp">
-        {new Date(timestamp).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        })}
+        {getRelativeTime(data.timestamp)}
       </div>
 
-      {location && (
-        <div className="detail-section">
-          <h4>Localização</h4>
-          <div className="detail-grid">
-            <div className="detail-item">
-              <span className="label">CEP:</span>
-              <span className="value">{location.cep}</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Rua:</span>
-              <span className="value">{location.street}</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Bairro:</span>
-              <span className="value">{location.neighborhood}</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Cidade:</span>
-              <span className="value">{location.city}</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Estado:</span>
-              <span className="value">{location.state}</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Coordenadas:</span>
-              <span className="value">{location.latitude}, {location.longitude}</span>
-            </div>
+      <div className="detail-section">
+        <h4>Informações do CEP</h4>
+        <div className="detail-grid">
+          <div className="detail-item">
+            <span className="label">CEP:</span>
+            <span className="value">{formatCepNumber(data.zipCode)}</span>
           </div>
-        </div>
-      )}
-
-      {weather && (
-        <div className="detail-section">
-          <h4>Clima</h4>
-          <div className="detail-grid">
-            <div className="detail-item">
-              <span className="label">Temperatura:</span>
-              <span className="value">{weather.temperature}°C</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Sensação Térmica:</span>
-              <span className="value">{weather.feels_like}°C</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Condição:</span>
-              <span className="value">{weather.condition}</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Umidade:</span>
-              <span className="value">{weather.humidity}%</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Pressão:</span>
-              <span className="value">{weather.pressure} hPa</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Vento:</span>
-              <span className="value">{weather.wind_speed} m/s</span>
-            </div>
-            <div className="detail-item">
-              <span className="label">Nuvens:</span>
-              <span className="value">{weather.clouds}%</span>
-            </div>
+          <div className="detail-item">
+            <span className="label">Logradouro:</span>
+            <span className="value">{data.street || 'Não informado'}</span>
           </div>
+          <div className="detail-item">
+            <span className="label">Bairro:</span>
+            <span className="value">{data.district || 'Não informado'}</span>
+          </div>
+          <div className="detail-item">
+            <span className="label">Cidade:</span>
+            <span className="value">{data.city}</span>
+          </div>
+          <div className="detail-item">
+            <span className="label">Estado:</span>
+            <span className="value">{data.state}</span>
+          </div>
+          {data.ibge && (
+            <div className="detail-item">
+              <span className="label">IBGE:</span>
+              <span className="value">{data.ibge}</span>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

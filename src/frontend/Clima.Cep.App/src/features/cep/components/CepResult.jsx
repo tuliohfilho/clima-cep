@@ -1,54 +1,36 @@
 import React from 'react';
 import './CepResult.css';
 
-/**
- * Componente para exibir resultado da busca de CEP com clima
- */
-const CepResult = ({ data, onClear }) => {
-  if (!data) return null;
+const CepResult = ({ data, onNewSearch }) => {
+  if (!data) {
+    return null;
+  }
 
-  const { location, weather } = data;
+  const formatCep = (cep) => {
+    return `${cep.slice(0, 5)}-${cep.slice(5)}`;
+  };
+
+  const resultItems = [
+    { label: 'CEP Formatado', value: formatCep(data.zipCode) },
+    { label: 'Logradouro', value: data.street || 'Não informado' },
+    { label: 'Bairro', value: data.district || 'Não informado' },
+    { label: 'Cidade', value: data.city },
+    { label: 'UF', value: data.state },
+    { label: 'Código IBGE', value: data.ibge || 'Não informado' },
+    { label: 'Coordenadas', value: data.location ? `${data.location.latitude}, ${data.location.longitude}` : 'Não disponível' },
+    { label: 'Provedor Utilizado', value: data.provider }
+  ];
 
   return (
     <div className="cep-result">
-      <button className="btn btn-secondary" onClick={onClear}>
-        Fechar
-      </button>
-
-      <div className="result-grid">
-        <div className="location-card">
-          <h2>Localização</h2>
-          {location && (
-            <div className="location-info">
-              <p><strong>CEP:</strong> {location.cep}</p>
-              <p><strong>Rua:</strong> {location.street}</p>
-              <p><strong>Bairro:</strong> {location.neighborhood}</p>
-              <p><strong>Cidade:</strong> {location.city}</p>
-              <p><strong>Estado:</strong> {location.state}</p>
-              <p><strong>Latitude:</strong> {location.latitude}</p>
-              <p><strong>Longitude:</strong> {location.longitude}</p>
-            </div>
-          )}
-        </div>
-
-        <div className="weather-card">
-          <h2>Clima</h2>
-          {weather && (
-            <div className="weather-info">
-              <div className="weather-main">
-                <p className="temperature">{weather.temperature}°C</p>
-                <p className="condition">{weather.condition}</p>
-              </div>
-              <div className="weather-details">
-                <p><strong>Sensação Térmica:</strong> {weather.feels_like}°C</p>
-                <p><strong>Umidade:</strong> {weather.humidity}%</p>
-                <p><strong>Pressão:</strong> {weather.pressure} hPa</p>
-                <p><strong>Vento:</strong> {weather.wind_speed} m/s</p>
-                <p><strong>Cobertura de Nuvens:</strong> {weather.clouds}%</p>
-              </div>
-            </div>
-          )}
-        </div>
+      <h2>Resultado da Busca</h2>
+      <div className="result-list">
+        {resultItems.map((item, index) => (
+          <div key={index} className="result-row">
+            <span className="result-label">{item.label}</span>
+            <span className="result-value">{item.value}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

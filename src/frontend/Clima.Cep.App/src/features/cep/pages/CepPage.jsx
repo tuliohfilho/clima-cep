@@ -1,46 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
+import useCep from '../hooks/useCep';
 import CepSearchForm from '../components/CepSearchForm';
 import CepResult from '../components/CepResult';
-import useCep from '../hooks/useCep';
 import './CepPage.css';
 
-/**
- * Página principal de busca por CEP
- */
 const CepPage = () => {
-  const {
-    cepData,
-    loading,
-    error,
-    searchCep,
-    clearData
-  } = useCep();
+  const { cepData, loading, error, searchCep, clearSearch } = useCep();
+  const [clearInput, setClearInput] = useState(false);
+
+  const handleSearch = async (cep) => {
+    await searchCep(cep);
+    setClearInput(true);
+  };
+
+  const handleNewSearch = () => {
+    clearSearch();
+    setClearInput(true);
+  };
 
   return (
     <div className="cep-page">
-      <div className="page-header">
-        <h1>Buscar Informações de CEP e Clima</h1>
-        <p>Insira um CEP para obter informações de localização e dados climáticos em tempo real</p>
+      <div className="cep-container">
+        <h1>Busca de CEP</h1>
+        <p className="subtitle">Consulte informações de localização por CEP</p>
+
+        <CepSearchForm onSearch={handleSearch} loading={loading} shouldClear={clearInput} />
+
+        {error && (
+          <div className="error-message">
+            <span>⚠️</span>
+            <p>{error}</p>
+          </div>
+        )}
+
+        {cepData && (
+          <>
+            <CepResult data={cepData} onNewSearch={handleNewSearch} />
+          </>
+        )}
       </div>
-
-      <CepSearchForm onSearch={searchCep} loading={loading} />
-
-      {error && (
-        <div className="error-message">
-          <strong>Erro:</strong> {error}
-        </div>
-      )}
-
-      {loading && (
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Carregando informações...</p>
-        </div>
-      )}
-
-      {cepData && !loading && (
-        <CepResult data={cepData} onClear={clearData} />
-      )}
     </div>
   );
 };

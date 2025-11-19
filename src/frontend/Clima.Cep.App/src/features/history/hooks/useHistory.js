@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import historyService from '../services/historyService';
 
 /**
- * Hook para gerenciar o histórico de buscas
+ * Hook para gerenciar o histórico de buscas (localStorage + API)
  */
 const useHistory = () => {
   const [historyData, setHistoryData] = useState([]);
@@ -11,7 +11,7 @@ const useHistory = () => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   /**
-   * Carrega o histórico do servidor
+   * Carrega o histórico do localStorage ou servidor
    */
   const loadHistory = useCallback(async () => {
     setLoading(true);
@@ -19,10 +19,9 @@ const useHistory = () => {
 
     try {
       const data = await historyService.getHistory();
-      setHistoryData(data || []);
+      setHistoryData(Array.isArray(data) ? data : []);
     } catch (err) {
-      const errorMessage = err.message || 'Erro ao carregar histórico';
-      setError(errorMessage);
+      // Não mostra erro, apenas usa o que tem localmente
       setHistoryData([]);
     } finally {
       setLoading(false);
@@ -39,8 +38,9 @@ const useHistory = () => {
       if (selectedItem?.id === id) {
         setSelectedItem(null);
       }
+      setError(null);
     } catch (err) {
-      setError(err.message || 'Erro ao remover item');
+      console.error('Erro ao remover item:', err);
     }
   }, [selectedItem]);
 
@@ -52,8 +52,9 @@ const useHistory = () => {
       await historyService.clearHistory();
       setHistoryData([]);
       setSelectedItem(null);
+      setError(null);
     } catch (err) {
-      setError(err.message || 'Erro ao limpar histórico');
+      console.error('Erro ao limpar histórico:', err);
     }
   }, []);
 
@@ -64,8 +65,22 @@ const useHistory = () => {
     try {
       const data = await historyService.getHistoryDetail(id);
       setSelectedItem(data);
+      setError(null);
     } catch (err) {
-      setError(err.message || 'Erro ao obter detalhes');
+      console.error('Erro ao obter detalhes:', err);
+    }
+  }, []);
+
+  /**
+   * Adiciona item ao histórico
+   */
+  const addItem = useCallback(async (searchData) => {
+    try {
+      const result = await historyService.addToHistory(searchData);
+      setHistoryData(prev => [result, ...prev].slice(0, 20));
+      setError(null);
+    } catch (err) {
+      console.error('Erro ao adicionar ao histórico:', err);
     }
   }, []);
 
@@ -85,7 +100,8 @@ const useHistory = () => {
     loadHistory,
     removeItem,
     clearAll,
-    getDetail
+    getDetail,
+    addItem
   };
 };
 

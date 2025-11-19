@@ -2,6 +2,31 @@ import React from 'react';
 import './HistoryList.css';
 
 /**
+ * Formata data para formato relativo (ex: "há 2 minutos")
+ */
+const getRelativeTime = (timestamp) => {
+  const now = new Date();
+  const date = new Date(timestamp);
+  const seconds = Math.floor((now - date) / 1000);
+  
+  if (seconds < 60) return 'agora';
+  if (seconds < 3600) return `há ${Math.floor(seconds / 60)} min`;
+  if (seconds < 86400) return `há ${Math.floor(seconds / 3600)}h`;
+  if (seconds < 604800) return `há ${Math.floor(seconds / 86400)}d`;
+  
+  return date.toLocaleDateString('pt-BR');
+};
+
+/**
+ * Formata CEP para XXXXX-XXX
+ */
+const formatCep = (cep) => {
+  if (!cep) return '';
+  const clean = cep.toString().replace(/\D/g, '');
+  return `${clean.slice(0, 5)}-${clean.slice(5)}`;
+};
+
+/**
  * Componente para exibir lista de histórico
  */
 const HistoryList = ({ items, onSelectItem, onRemoveItem, selectedId }) => {
@@ -21,32 +46,32 @@ const HistoryList = ({ items, onSelectItem, onRemoveItem, selectedId }) => {
           <li
             key={item.id}
             className={`history-item ${selectedId === item.id ? 'active' : ''}`}
+            onClick={() => onSelectItem(item)}
           >
-            <div className="item-content" onClick={() => onSelectItem(item.id)}>
+            <div className="item-header">
               <div className="item-main">
-                <span className="item-cep">{item.cep}</span>
-                <span className="item-city">{item.city}, {item.state}</span>
+                <div className="item-cep">{formatCep(item.zipCode)}</div>
+                <div className="item-city">{item.city}, {item.state}</div>
               </div>
               <div className="item-date">
-                {new Date(item.timestamp).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
+                {getRelativeTime(item.timestamp)}
               </div>
             </div>
-            <button
-              className="btn-remove"
-              onClick={(e) => {
-                e.stopPropagation();
-                onRemoveItem(item.id);
-              }}
-              title="Remover"
-            >
-              ✕
-            </button>
+            <div className="item-footer">
+              <div className="item-street">
+                {item.street || 'Sem logradouro'}
+              </div>
+              <button
+                className="btn-remove"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemoveItem(item.id);
+                }}
+                title="Remover"
+              >
+                ✕
+              </button>
+            </div>
           </li>
         ))}
       </ul>

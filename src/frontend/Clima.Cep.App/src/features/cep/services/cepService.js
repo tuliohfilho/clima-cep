@@ -5,12 +5,13 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5137/api
 const cepService = {
   /**
    * Busca informações de localização por CEP
-   * @param {string} cep - CEP a ser buscado
+   * @param {string} cep - CEP a ser buscado (sem formatação)
    * @returns {Promise} Dados de localização
    */
-  searchLocationByCep: async (cep) => {
+  searchCep: async (cep) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/cep/${cep}`);
+      const cleanCep = cep.replace(/\D/g, '');
+      const response = await axios.get(`${API_BASE_URL}/cep/${cleanCep}`);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Erro ao buscar CEP');
@@ -34,20 +35,6 @@ const cepService = {
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Erro ao buscar clima');
-    }
-  },
-
-  /**
-   * Busca informações combinadas (localização + clima)
-   * @param {string} cep - CEP a ser buscado
-   * @returns {Promise} Dados de localização e clima
-   */
-  searchCepWithWeather: async (cep) => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/cep/${cep}`);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.message || 'Erro ao buscar informações do CEP');
     }
   }
 };
