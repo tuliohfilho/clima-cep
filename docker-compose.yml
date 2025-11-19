@@ -11,8 +11,8 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
     networks:
-      - cdbnetwork
+      - climacepnetwork
 
 networks:
-  cdbnetwork:
+  climacepnetwork:
     driver: bridge
