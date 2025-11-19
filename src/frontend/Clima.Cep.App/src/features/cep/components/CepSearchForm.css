@@ -1,0 +1,79 @@
+.cep-search-form {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  color: #333;
+}
+
+.cep-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.cep-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.cep-input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 600;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #667eea;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #5568d3;
+}
+
+@media (max-width: 768px) {
+  .cep-search-form {
+    padding: 1.5rem;
+  }
+
+  .form-group {
+    flex-direction: column;
+  }
+
+  .cep-input {
+    min-width: 100%;
+  }
+}

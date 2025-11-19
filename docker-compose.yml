@@ -13,6 +13,21 @@ services:
     networks:
       - climacepnetwork
 
+  clima-cep-app:
+    build:
+      context: ./src/frontend/Clima.Cep.App
+      dockerfile: Dockerfile
+    container_name: clima-cep-app
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://clima-cep-api:80/api
+      - NODE_ENV=production
+    networks:
+      - climacepnetwork
+    depends_on:
+      - clima-cep-api
+
 networks:
   climacepnetwork:
     driver: bridge
