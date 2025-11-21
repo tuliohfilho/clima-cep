@@ -90,7 +90,7 @@ Para parar a execução dos containers, pressione `Ctrl + C` no terminal onde o 
 Para remover os containers, as redes e os volumes criados pelo `docker-compose`, execute:
 
 ```bash
-docker-compose down
+docker-compose down --remove-orphans
 ```
 
 ## Detalhes da Containerização
@@ -111,14 +111,26 @@ services:
       dockerfile: src/backend/Clima.Cep.Api/Dockerfile
     container_name: clima-cep-api
     ports:
-      - "5137:80" # Mapeia a porta 5137 do host para a porta 80 do container
+      - "5137:80"
     environment:
       - ASPNETCORE_URLS=http://+:80
     networks:
       - climacepnetwork
 
-  # O serviço 'clima-cep-app' (Frontend) será adicionado aqui
-  # ...
+  clima-cep-app:
+    build:
+      context: ./src/frontend/Clima.Cep.App
+      dockerfile: Dockerfile
+    container_name: clima-cep-app
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://clima-cep-api:80/api
+      - NODE_ENV=production
+    networks:
+      - climacepnetwork
+    depends_on:
+      - clima-cep-api
 
 networks:
   climacepnetwork:
@@ -137,27 +149,19 @@ O Dockerfile do Backend utiliza uma abordagem *multi-stage* para garantir que a 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /build
 
-# Copia o código-fonte do projeto para o diretório de trabalho
 COPY ./src/backend/. ./src
 
-# Restaura as dependências do projeto API
 RUN dotnet restore src/Clima.Cep.Api/Clima.Cep.Api.csproj
-
-# Publica a aplicação em modo Release
 RUN dotnet publish src/Clima.Cep.Api/Clima.Cep.Api.csproj -c Release -o src/Clima.Cep.Api/dist
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-
-# Copia os arquivos publicados da etapa 'build-env' para a imagem final
 COPY --from=build-env /build/src/Clima.Cep.Api/dist ./
 
-# Configurações de ambiente
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://*:80
 EXPOSE 80
 
-# Define o ponto de entrada da aplicação
 ENTRYPOINT ["dotnet", "Clima.Cep.Api.dll"]
 ```
 
@@ -168,30 +172,31 @@ O rascunho fornecido é baseado em Angular. Abaixo está uma **sugestão de corr
 **Localização:** `src/frontend/Clima.cep.App/Dockerfile`
 
 ```dockerfile
-# Stage 1: Build da Aplicação React
-FROM node:20 AS builder
+FROM node:18-alpine AS builder
+
 WORKDIR /app
 
-# Copia o código-fonte do projeto Frontend
-COPY src/frontend/Clima.cep.App/ .
+COPY package.json package-lock.json* yarn.lock* ./
 
-# Instala dependências e executa o build
-RUN npm install
-# O comando de build pode variar (ex: npm run build, npm run prod)
-RUN npm run build 
+RUN npm ci || npm install
 
-# Stage 2: Servir com Nginx
-FROM nginx:alpine
-# Copia a configuração do Nginx (se houver)
-COPY src/frontend/Clima.Cep.App/nginx.conf /etc/nginx/conf.d/default.conf
+COPY . .
 
-# Copia os arquivos estáticos gerados (ajuste o caminho se necessário: /app/build ou /app/dist)
-# Assumindo que o build gera os arquivos em /app/build
-COPY --from=builder /app/build /usr/share/nginx/html
+RUN npm run build
 
-EXPOSE 80
+FROM node:18-alpine
 
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /app
+
+RUN npm install -g serve
+
+COPY --from=builder /app/build ./build
+
+EXPOSE 3000
+
+ENV REACT_APP_API_URL=http://localhost:5000/api
+
+CMD ["serve", "-s", "build", "-l", "3000"]
 ```
 
 ## Testes da API (Backend)
@@ -245,10 +250,3 @@ curl -s "http://localhost:5137/weather?days=5" | jq .
 | **Frontend** | React Hook Form + Zod | Gerenciamento e validação de formulários. |
 | **Geral** | Docker Multi-Stage Build | Otimização do tamanho das imagens de produção. |
 | **Geral** | Docker Compose | Orquestração e execução simplificada dos serviços. |
-
-## Próximos Passos (Para o Mantenedor)
-
-*   **Frontend no Docker Compose:** Adicionar o serviço do Frontend (`clima-cep-app`) ao `docker-compose.yml` e garantir que ele se comunique com o Backend (`clima-cep-api`) usando o nome do serviço.
-*   **Testes:** Certifique-se de que os testes unitários e de integração (US06 e US09) estejam implementados e passando.
-*   **Variáveis de Ambiente:** Se houver chaves de API ou configurações sensíveis, utilize variáveis de ambiente no `docker-compose.yml` e no `Dockerfile` (sem expor segredos).
-*   **CI/CD:** Configure um pipeline de Integração Contínua/Entrega Contínua (CI/CD) para automatizar o build e o deploy das imagens Docker.
