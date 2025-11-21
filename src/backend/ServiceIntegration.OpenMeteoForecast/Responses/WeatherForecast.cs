@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace ServiceIntegration.OpenMeteoForecast.Responses;
 
 /// <summary>

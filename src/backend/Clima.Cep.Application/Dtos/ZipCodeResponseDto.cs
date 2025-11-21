@@ -1,7 +1,7 @@
 namespace Clima.Cep.Application.Dtos;
 
 /// <summary>
-/// DTO de resposta para consulta de CEP (US01 - GET /cep/{cep}).
+/// DTO de resposta para consulta de CEP.
 /// </summary>
 public class ZipCodeResponseDto
 {

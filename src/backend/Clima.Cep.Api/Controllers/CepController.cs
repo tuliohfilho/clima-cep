@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Clima.Cep.Api.Controllers;
 
 /// <summary>
-/// Controller para gerenciar operações de CEP (US01 e US02).
+/// Controller para gerenciar operações de CEP.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -25,7 +25,7 @@ public class CepController(
     private readonly IZipCodeServiceQuery _zipCodeServiceQuery = zipCodeServiceQuery ?? throw new ArgumentNullException(nameof(zipCodeServiceQuery));
 
     /// <summary>
-    /// Consulta um CEP sem persistir (US01).
+    /// Consulta um CEP sem persistir
     /// </summary>
     /// <param name="zipCode">CEP a consultar (com ou sem hífen: 01001-000 ou 01001000).</param>
     /// <returns>Dados do endereço ou erro.</returns>
@@ -101,7 +101,7 @@ public class CepController(
     }
 
     /// <summary>
-    /// Consulta e persiste um novo CEP (US02).
+    /// Consulta e persiste um novo CEP.
     /// </summary>
     /// <param name="request">Request com o CEP a ser consultado e persistido.</param>
     /// <returns>CEP persistido com ID e data de criação.</returns>

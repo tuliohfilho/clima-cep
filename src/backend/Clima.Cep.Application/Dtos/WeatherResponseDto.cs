@@ -1,7 +1,7 @@
 namespace Clima.Cep.Application.Dtos;
 
 /// <summary>
-/// DTO de resposta para consulta de clima (US03 - GET /weather?days=3).
+/// DTO de resposta para consulta de clima.
 /// </summary>
 public class WeatherResponseDto
 {

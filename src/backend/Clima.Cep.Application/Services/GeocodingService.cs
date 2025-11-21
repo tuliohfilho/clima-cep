@@ -5,7 +5,7 @@ using ServiceIntegration.OpenMeteoGeocoding.Interfaces;
 namespace Clima.Cep.Application.Services;
 
 /// <summary>
-/// Implementação do serviço de geocodificação (US03).
+/// Implementação do serviço de geocodificação.
 /// Converte cidade + estado em coordenadas usando API externa.
 /// </summary>
 public class GeocodingService(IOpenMeteoGeocodingClient apiClient, ILogger<GeocodingService> logger) : IGeocodingService

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ServiceIntegration.OpenMeteoForecast.Responses;
+﻿namespace ServiceIntegration.OpenMeteoForecast.Responses;
 
 public class DailyData
 {

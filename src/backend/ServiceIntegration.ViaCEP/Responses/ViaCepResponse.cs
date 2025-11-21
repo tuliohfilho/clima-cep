@@ -1,6 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-
-namespace ServiceIntegration.ViaCEP.Responses;
+﻿namespace ServiceIntegration.ViaCEP.Responses;
 
 /// <summary>
 /// Modelo de resposta da API ViaCEP.

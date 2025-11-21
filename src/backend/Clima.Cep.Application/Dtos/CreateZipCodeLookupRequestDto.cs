@@ -1,7 +1,7 @@
 namespace Clima.Cep.Application.Dtos;
 
 /// <summary>
-/// DTO de requisição para persistir um novo CEP (US02 - POST /cep).
+/// DTO de requisição para persistir um novo CEP.
 /// </summary>
 public class CreateZipCodeLookupRequestDto
 {

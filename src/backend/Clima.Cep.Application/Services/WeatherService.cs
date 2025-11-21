@@ -10,7 +10,7 @@ using ServiceIntegration.OpenMeteoGeocoding.Interfaces;
 namespace Clima.Cep.Application.Services;
 
 /// <summary>
-/// Implementação do serviço de clima (US03).
+/// Implementação do serviço de clima.
 /// Consulta clima para CEPs persistidos com cache por 10 minutos.
 /// </summary>
 public class WeatherService(

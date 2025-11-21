@@ -2,12 +2,11 @@ using Clima.Cep.Application.Dtos;
 using Clima.Cep.Application.Interfaces.Queries;
 using Clima.Cep.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace Clima.Cep.Api.Controllers;
 
 /// <summary>
-/// Controller para gerenciar operações de clima (US03).
+/// Controller para gerenciar operações de clima.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -22,7 +21,7 @@ public class WeatherController(
     private readonly IZipCodeServiceQuery _zipCodeServiceQuery = zipCodeServiceQuery ?? throw new ArgumentNullException(nameof(zipCodeServiceQuery));
 
     /// <summary>
-    /// Consulta clima atual e previsão para todos os CEPs persistidos (US03).
+    /// Consulta clima atual e previsão para todos os CEPs persistidos.
     /// </summary>
     /// <param name="days">Número de dias de previsão (1-7, padrão 3).</param>
     /// <returns>Lista de clima para cada CEP persistido.</returns>

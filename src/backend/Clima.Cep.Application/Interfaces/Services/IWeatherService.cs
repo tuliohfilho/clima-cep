@@ -3,7 +3,7 @@ using Clima.Cep.Application.Dtos;
 namespace Clima.Cep.Application.Interfaces.Services;
 
 /// <summary>
-/// Serviço para consulta de clima e previsão (US03).
+/// Serviço para consulta de clima e previsão.
 /// Utiliza os CEPs persistidos (latitude/longitude) como referência.
 /// </summary>
 public interface IWeatherService
