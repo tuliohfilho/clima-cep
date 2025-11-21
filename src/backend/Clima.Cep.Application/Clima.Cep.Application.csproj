@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Clima.Cep.Domain\Clima.Cep.Domain.csproj" />
+    <ProjectReference Include="..\Clima.Cep.Infrastructure\Clima.Cep.Infrastructure.csproj" />
     <ProjectReference Include="..\ServiceIntegration.BrasilAPICEP\ServiceIntegration.BrasilAPICEP.csproj" />
     <ProjectReference Include="..\ServiceIntegration.OpenMeteoForecast\ServiceIntegration.OpenMeteoForecast.csproj" />
     <ProjectReference Include="..\ServiceIntegration.OpenMeteoGeocoding\ServiceIntegration.OpenMeteoGeocoding.csproj" />
